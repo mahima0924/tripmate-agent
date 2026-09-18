@@ -1,0 +1,6 @@
+groq
+requests
+python-dotenv
+scikit-learn
+numpy
+pytest
