@@ -1,4 +1,5 @@
 # TripMate — Agentic AI Travel Assistant
+🎥 **Loom Video Walkthrough:** https://www.loom.com/share/dac32c18fb474077b8c379904b2eb7e8
 
 TripMate is the agentic core of an AI travel assistant. It answers natural-language
 questions about destinations — visa requirements, weather, packing advice, local
