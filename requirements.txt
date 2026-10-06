@@ -4,3 +4,5 @@ python-dotenv
 scikit-learn
 numpy
 pytest
+langchain
+langchain-groq

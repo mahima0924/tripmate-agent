@@ -59,7 +59,7 @@ tripmate-agent/
 
 **1. Clone the repository**
 ```bash
-git clone https://github.com/mahima2409/tripmate-agent.git
+git clone https://github.com/mahima0924/tripmate-agent.git
 cd tripmate-agent
 ```
 
@@ -166,42 +166,31 @@ user. Every step is logged.
 
 ## Tool Schemas (as given to the LLM)
 
+With LangChain, tool schemas are auto-generated from each function's type
+hints and docstring via the `@tool` decorator, rather than being written as
+raw JSON manually. The docstrings below are exactly what's sent to the LLM:
+
 ### `search_destination_guide`
-```json
-{
-  "type": "function",
-  "function": {
-    "name": "search_destination_guide",
-    "description": "Search the destination knowledge base for information about visa requirements, best time to visit, local customs, packing tips, or safety notes for a specific city.",
-    "parameters": {
-      "type": "object",
-      "properties": {
-        "query": { "type": "string", "description": "A natural-language question or topic, e.g. 'visa requirements for Tokyo'." }
-      },
-      "required": ["query"]
-    }
-  }
-}
+```python
+@tool
+def search_destination_guide(query: str) -> str:
+    """Search the destination knowledge base for information about visa
+    requirements, best time to visit, local customs, packing tips, or
+    safety notes for a specific city. Use this whenever the user asks
+    about destination-specific facts or advice."""
 ```
 
 ### `get_weather_forecast`
-```json
-{
-  "type": "function",
-  "function": {
-    "name": "get_weather_forecast",
-    "description": "Get typical weather conditions (temperature range and conditions) for a city during a given month or date.",
-    "parameters": {
-      "type": "object",
-      "properties": {
-        "city": { "type": "string", "description": "The city name, e.g. 'Tokyo'." },
-        "date_or_month": { "type": "string", "description": "A month name (e.g. 'December') or a date (e.g. '2025-12-10')." }
-      },
-      "required": ["city", "date_or_month"]
-    }
-  }
-}
+```python
+@tool
+def get_weather_forecast(city: str, date_or_month: str) -> str:
+    """Get typical weather conditions (temperature range and conditions)
+    for a city during a given month or date. Use this whenever the user
+    asks about weather, temperature, climate, or when deciding what to
+    pack based on season."""
 ```
+
+
 
 ---
 
@@ -305,10 +294,7 @@ answer from its own training data.
   access, very low latency (useful for a responsive CLI demo), and native
   OpenAI-compatible function-calling, which lets the orchestration logic stay
   simple and explicit.
-- **Raw function-calling loop instead of a framework** (LangChain/LangGraph):
-  for a project this size, a framework adds abstraction without adding much
-  value, and a raw loop is easier to reason about, log, and explain in the
-  video walkthrough.
+- Framework — LangChain (create_agent, built on LangGraph) instead of a raw function-calling loop: per reviewer feedback requesting a framework be used. create_agent builds a tool-calling agent graph that loops over tool calls automatically, while still letting me define custom tool schemas, a system prompt, and structured logging of every tool call via a trace-logging step over the returned message history. The underlying tools (search_destination_guide, get_weather_forecast) and the system prompt rules (city-matching guard, scope awareness, etc.) are unchanged from the original implementation -- only the orchestration layer changed.
 - **RAG: TF-IDF + cosine similarity instead of dense embeddings**: with only
   4 cities / 20 chunks, a lightweight, dependency-free, fully local approach
   is more than sufficient and avoids any model download or API cost. See
@@ -347,8 +333,6 @@ answer from its own training data.
   runs).
 - No caching layer yet, so repeated identical queries re-run both the LLM
   call and any tool calls (see Scalability below).
-- `architecture.png` should be generated from the diagram above (e.g. via
-  draw.io, Excalidraw, or Mermaid export) for the final submission.
 
 ## Suggested Future Improvements
 
