@@ -159,8 +159,7 @@ Orchestrator executes the real Python function(s) → results are sent back to
 Groq → Groq synthesizes one final natural-language answer → returned to the
 user. Every step is logged.
 
-*(A rendered version of this diagram should also be exported as
-`architecture.png` for the final submission — see Known Limitations.)*
+
 
 ---
 
@@ -201,7 +200,7 @@ def get_weather_forecast(city: str, date_or_month: str) -> str:
 **Input:** `What is the visa requirement for entering Barcelona?`
 
 ```
-Reasoning: model chose tool=search_destination_guide with args={'query': 'visa requirements for Barcelona'}
+Reasoning: agent chose tool=search_destination_guide with args={'query': 'visa requirements for Barcelona'}
 Tool call succeeded: result=['Barcelona - VISA & ENTRY: Spain is part of the Schengen Area...', ...]
 Final answer: Visitors to Barcelona (Spain) generally do not need a visa for short
 tourist stays (up to 90 days within a 180-day period) if they hold a passport
@@ -217,10 +216,10 @@ to a visa question.
 **Input:** `What should I pack for a trip to Reykjavik in February?`
 
 ```
-Reasoning: model chose tool=search_destination_guide with args={'query': 'packing tips for Reykjavik'}
+Reasoning: agent chose tool=search_destination_guide with args={'query': 'packing tips for Reykjavik'}
 Tool call succeeded: result=['Reykjavik - PACKING TIPS: Weather can change rapidly...waterproof and windproof outer layers...']
 
-Reasoning: model chose tool=get_weather_forecast with args={'city': 'Reykjavik', 'date_or_month': 'February'}
+Reasoning: agent chose tool=get_weather_forecast with args={'city': 'Reykjavik', 'date_or_month': 'February'}
 Tool call succeeded: result={'city': 'Reykjavik', 'month': 2, 'temp_range_c': [-1.4, 3.3], 'conditions': 'frequent rain likely', 'basis': 'averaged from 84 days across the last 3 years'}
 
 Final answer: [Full packing list combining the destination guide's packing
@@ -265,7 +264,7 @@ error the agent can relay honestly to the user.
 **Input:** `What is the visa requirement for Paris?`
 
 ```
-Reasoning: model chose tool=search_destination_guide with args={'query': 'visa requirements for Paris'}
+Reasoning: agent chose tool=search_destination_guide with args={'query': 'visa requirements for Paris'}
 WARNING: No supported destination named in query. Supported cities: ['Bangkok', 'Barcelona', 'Reykjavik', 'Tokyo']
 Tool call succeeded: result=[]
 
